@@ -24,8 +24,8 @@ function setup() {
   engine = Engine.create();
   engine.world.gravity.y = 0;
 
-  gol1 = Bodies.rectangle(-75,windowHeight/2,1,windowHeight/3, {isStatic:true, isSensor:true, restitution:1, name:'gol1'});
-  gol2 = Bodies.rectangle(windowWidth+75,windowHeight/2,1,windowHeight/3, {isStatic:true, isSensor:true, restitution:1, name:'gol2'});
+  gol1 = Bodies.rectangle(-75,windowHeight/2,1,windowHeight/3, {isStatic:true, restitution:1, name:'gol1'});
+  gol2 = Bodies.rectangle(windowWidth+75,windowHeight/2,1,windowHeight/3, {isStatic:true, restitution:1, name:'gol2'});
   left1 = Bodies.rectangle(5,windowHeight/6,10,windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//left
   right1 = Bodies.rectangle(windowWidth-5, windowHeight/6, 10, windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//right
   left2 = Bodies.rectangle(5,5*windowHeight/6,10,windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//left
