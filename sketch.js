@@ -15,6 +15,8 @@ const drawBody = Helpers.drawBody;
 var engine;
 
 var left1,left2,right1,right2,up,bottom,disco,gol1,gol2;
+var car1, car2;
+var carImage1, carImage2;
 
 function setup() {
   
@@ -30,8 +32,10 @@ function setup() {
   right2 = Bodies.rectangle(windowWidth-5, 5*windowHeight/6, 10, windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//right
   up = Bodies.rectangle(windowWidth/2,5,windowWidth-20,10, {restitution: 1, isStatic: true, friction: 0});//top
   bottom = Bodies.rectangle(windowWidth/2,windowHeight-5,windowWidth-20,10, {restitution: 1, isStatic: true, friction: 0});//down
-  disco = Bodies.circle(windowWidth/2,windowHeight/2,50, {restitution: 1, friction: 0});
-  World.add(engine.world, [left1,right1,left2,right2,up,bottom,disco,gol1,gol2]);
+  disco = Bodies.circle(windowWidth/2,windowHeight/2,50, {restitution: 1, friction: 0, density: 0.00001});//disco
+  car1 = Bodies.circle(windowWidth-100,windowHeight/2,50, {restitution: 0, friction: 0, isStatic: false, density: 0.002, render: {fillStyle: '#ff0000', sprite: {texture: './assets/car1.png'}}});
+  car2 = Bodies.circle(100,windowHeight/2,50, {restitution: 0, friction: 0, density: 0.002});
+  World.add(engine.world, [left1,right1,left2,right2,up,bottom,disco,gol1,gol2,car1,car2]);
 
   let mouse = Mouse.create(canvas.elt);
   let mouseParams = {
@@ -71,6 +75,11 @@ function verifyPositon(){
   }
 }
 
+function preload() {
+  carImage1 = loadImage('./assets/car1.png');
+  carImage2 = loadImage('./assets/car2.png');
+}
+
 function draw() {
   background(255);
   verifyPositon();
@@ -88,5 +97,42 @@ function draw() {
   drawBody(up);
   drawBody(bottom);
   drawBody(disco);
+
+  checkCar1Control();
+  checkCar2Control();
+
+  imageMode(CENTER);
+  image(carImage1, car1.position.x, car1.position.y, 120, 100);
+  image(carImage2, car2.position.x, car2.position.y, 120, 100);
   
+}
+
+function checkCar1Control() {
+  if (keyIsDown(LEFT_ARROW)) {
+    Body.applyForce(car1, {x: car1.position.x, y: car1.position.y}, {x: -0.01, y: 0});
+  }
+  if (keyIsDown(RIGHT_ARROW)) {
+    Body.applyForce(car1, {x: car1.position.x, y: car1.position.y}, {x: 0.01, y: 0});
+  }
+  if (keyIsDown(UP_ARROW)) {
+    Body.applyForce(car1, {x: car1.position.x, y: car1.position.y}, {x: 0, y: -0.01});
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    Body.applyForce(car1, {x: car1.position.x, y: car1.position.y}, {x: 0, y: 0.01});
+  }
+}
+
+function checkCar2Control() {
+  if (keyIsDown(65)) { //a
+    Body.applyForce(car2, {x: car2.position.x, y: car2.position.y}, {x: -0.01, y: 0});
+  }
+  if (keyIsDown(68)) { //d
+    Body.applyForce(car2, {x: car2.position.x, y: car2.position.y}, {x: 0.01, y: 0});
+  }
+  if (keyIsDown(87)) { //w
+    Body.applyForce(car2, {x: car2.position.x, y: car2.position.y}, {x: 0, y: -0.01});
+  }
+  if (keyIsDown(83)) { //s
+    Body.applyForce(car2, {x: car2.position.x, y: car2.position.y}, {x: 0, y: 0.01});
+  }
 }
