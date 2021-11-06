@@ -56,10 +56,18 @@ function setup() {
       pontos2++;
       Body.setPosition(disco,{x:windowWidth/2,y:windowHeight/2});
       Body.setVelocity(disco,{x:0,y:0});
+      Body.setPosition(car1,{x:windowWidth-100,y:windowHeight/2});
+      Body.setVelocity(car1,{x:0,y:0});
+      Body.setPosition(car2,{x:100,y:windowHeight/2});
+      Body.setVelocity(car2,{x:0,y:0});
     }else if(bodyA.name==="gol2" && bodyB.name==="disco"){
       pontos1++;
       Body.setPosition(disco,{x:windowWidth/2,y:windowHeight/2});
       Body.setVelocity(disco,{x:0,y:0});
+      Body.setPosition(car1,{x:windowWidth-100,y:windowHeight/2});
+      Body.setVelocity(car1,{x:0,y:0});
+      Body.setPosition(car2,{x:100,y:windowHeight/2});
+      Body.setVelocity(car2,{x:0,y:0});
     }
     
   });
