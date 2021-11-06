@@ -24,15 +24,15 @@ function setup() {
   engine = Engine.create();
   engine.world.gravity.y = 0;
 
-  gol1 = Bodies.rectangle(-75,windowHeight/2,1,windowHeight/3, {isStatic:true, isSensor:true, restitution:1, name:'gol1'});
-  gol2 = Bodies.rectangle(windowWidth+75,windowHeight/2,1,windowHeight/3, {isStatic:true, isSensor:true, restitution:1, name:'gol2'});
+  gol1 = Bodies.rectangle(-75,windowHeight/2,1,windowHeight/3, {isStatic:true, restitution:1, name:'gol1'});
+  gol2 = Bodies.rectangle(windowWidth+75,windowHeight/2,1,windowHeight/3, {isStatic:true, restitution:1, name:'gol2'});
   left1 = Bodies.rectangle(5,windowHeight/6,10,windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//left
   right1 = Bodies.rectangle(windowWidth-5, windowHeight/6, 10, windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//right
   left2 = Bodies.rectangle(5,5*windowHeight/6,10,windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//left
   right2 = Bodies.rectangle(windowWidth-5, 5*windowHeight/6, 10, windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//right
   up = Bodies.rectangle(windowWidth/2,5,windowWidth-20,10, {restitution: 1, isStatic: true, friction: 0});//top
   bottom = Bodies.rectangle(windowWidth/2,windowHeight-5,windowWidth-20,10, {restitution: 1, isStatic: true, friction: 0});//down
-  disco = Bodies.circle(windowWidth/2,windowHeight/2,50, {restitution: 1, friction: 0, density: 0.00001});//disco
+  disco = Bodies.circle(windowWidth/2,windowHeight/2,50, {restitution: 1, friction: 0, density: 0.00001, name: 'disco'});//disco
   car1 = Bodies.circle(windowWidth-100,windowHeight/2,50, {restitution: 0, friction: 0, isStatic: false, density: 0.002, render: {fillStyle: '#ff0000', sprite: {texture: './assets/car1.png'}}});
   car2 = Bodies.circle(100,windowHeight/2,50, {restitution: 0, friction: 0, density: 0.002});
   World.add(engine.world, [left1,right1,left2,right2,up,bottom,disco,gol1,gol2,car1,car2]);
@@ -52,14 +52,22 @@ function setup() {
     const pairs = event.pairs[0];
     const bodyA = pairs.bodyA;
     const bodyB = pairs.bodyB;
-    if (bodyA.name === "gol1") {
+    if (bodyA.name === "gol1" && bodyB.name === "disco") {
       pontos2++;
       Body.setPosition(disco,{x:windowWidth/2,y:windowHeight/2});
       Body.setVelocity(disco,{x:0,y:0});
-    }else if(bodyA.name==="gol2"){
+      Body.setPosition(car1,{x:windowWidth-100,y:windowHeight/2});
+      Body.setVelocity(car1,{x:0,y:0});
+      Body.setPosition(car2,{x:100,y:windowHeight/2});
+      Body.setVelocity(car2,{x:0,y:0});
+    }else if(bodyA.name==="gol2" && bodyB.name==="disco"){
       pontos1++;
       Body.setPosition(disco,{x:windowWidth/2,y:windowHeight/2});
       Body.setVelocity(disco,{x:0,y:0});
+      Body.setPosition(car1,{x:windowWidth-100,y:windowHeight/2});
+      Body.setVelocity(car1,{x:0,y:0});
+      Body.setPosition(car2,{x:100,y:windowHeight/2});
+      Body.setVelocity(car2,{x:0,y:0});
     }
     
   });
@@ -82,7 +90,7 @@ function preload() {
 
 function draw() {
   background(255);
-  verifyPositon();
+  //verifyPositon();
   stroke(0);
   fill(0);
   textSize(20)
