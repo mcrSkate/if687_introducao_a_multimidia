@@ -26,17 +26,18 @@ function setup() {
 
   engine.world.gravity.y = 0;
 
-  gol1 = Bodies.rectangle(-20,windowHeight/2,1,windowHeight/3, {isStatic:true, restitution:1, name:'gol1'});
-  gol2 = Bodies.rectangle(windowWidth+20,windowHeight/2,1,windowHeight/3, {isStatic:true, restitution:1, name:'gol2'});
-  left1 = Bodies.rectangle(25,windowHeight/6,50,windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//left
-  right1 = Bodies.rectangle(windowWidth-25, windowHeight/6, 50, windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//right
-  left2 = Bodies.rectangle(25,5*windowHeight/6,50,windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//left
-  right2 = Bodies.rectangle(windowWidth-25, 5*windowHeight/6, 50, windowHeight/3, {restitution: 1, isStatic: true, friction: 0});//right
-  up = Bodies.rectangle(windowWidth/2,25,windowWidth-100,50, {restitution: 1, isStatic: true, friction: 0});//top
-  bottom = Bodies.rectangle(windowWidth/2,windowHeight-25,windowWidth-100,50, {restitution: 1, isStatic: true, friction: 0});//down
-  disco = Bodies.circle(windowWidth/2,windowHeight/2,50, {restitution: 1, frictionAir:0, friction: 0, density: 0.00001, name: 'disco', mass:1});
-  car1 = Bodies.rectangle(windowWidth-100,windowHeight/2,80,50, {restitution: 0.5, friction: 0, frictionAir:0.03, density: 0.002, mass:5});
-  car2 = Bodies.rectangle(100,windowHeight/2,80,50, {restitution: 0.5, friction: 0, frictionAir: 0.03, density: 0.002, mass:5});
+  gol1 = Bodies.rectangle(-20,height/2,1,height/3, {isStatic:true, restitution:1, name:'gol1'});
+  gol2 = Bodies.rectangle(width+20,height/2,1,height/3, {isStatic:true, restitution:1, name:'gol2'});
+  left1 = Bodies.rectangle(25,height/6,50,height/3, {restitution: 1, isStatic: true, friction: 0});//left
+  right1 = Bodies.rectangle(width-25, height/6, 50, height/3, {restitution: 1, isStatic: true, friction: 0});//right
+  left2 = Bodies.rectangle(25,5*height/6,50,height/3, {restitution: 1, isStatic: true, friction: 0});//left
+  right2 = Bodies.rectangle(width-25, 5*height/6, 50, height/3, {restitution: 1, isStatic: true, friction: 0});//right
+  up = Bodies.rectangle(width/2,25,width-100,50, {restitution: 1, isStatic: true, friction: 0});//top
+  bottom = Bodies.rectangle(width/2,height-25,width-100,50, {restitution: 1, isStatic: true, friction: 0});//down
+  disco = Bodies.circle(width/2,height/2,50, {restitution: 1, frictionAir:0, friction: 0, density: 0.00001, name: 'disco', mass:1});
+  car1 = Bodies.rectangle(width-100,height/2,80,50, {restitution: 0.5, friction: 0, frictionAir:0.03, density: 0.002, mass:5});
+  car2 = Bodies.rectangle(100,height/2,80,50, {restitution: 0.5, friction: 0, frictionAir: 0.03, density: 0.002, mass:5});
+  
   World.add(engine.world, [left1,right1,left2,right2,up,bottom,disco,gol1,gol2,car1,car2]);
 
   
@@ -67,17 +68,20 @@ function setup() {
   });
 }
 
+
 function resetPoint(){ //deixa tudo com estado inicial
-  Body.setPosition(disco,{x:windowWidth/2,y:windowHeight/2});
+  console.log(car1);
+  Body.setPosition(disco,{x:width/2,y:height/2});
   Body.setVelocity(disco,{x:0,y:0});
-  Body.setPosition(car1,{x:windowWidth-100,y:windowHeight/2});
+  Body.setPosition(car1,{x:width-100,y:height/2});
   Body.setVelocity(car1,{x:0,y:0});
-  Body.setPosition(car2,{x:100,y:windowHeight/2});
+  Body.setPosition(car2,{x:100,y:height/2});
   Body.setVelocity(car2,{x:0,y:0});
   Body.setAngle(car1,0);
   Body.setAngle(car2,0);
   wheels1=0;
   wheels2=0;
+  
 }
 
 function preload() {
@@ -87,7 +91,6 @@ function preload() {
 
 function draw() {
   background(255);
-  //verifyPositon();
   stroke(0);
   fill(0);
   drawBody(gol1);
@@ -102,10 +105,12 @@ function draw() {
   fill(255);
   textSize(20)
   text(pontos1, 30, 30);
-  text(pontos2,windowWidth-40, 30);
+  text(pontos2,width-40, 30);
+  imageMode(CENTER);
   checkCar1Control();
   checkCar2Control();
-  imageMode(CENTER);
+  drawBody(car1);
+  drawBody(car2);
   translate(car1.position.x,car1.position.y);//abaixo sao rotacoes e translacoes para poder alinhar a imagem ao movimento do carro, fazendo com que ela sempre rotacione de acordo com o angulo do body
   rotate(car1.angle);
   image(carImage1, 0, 0, 85, 55);
@@ -122,19 +127,26 @@ function draw() {
   line(car1.position.x,car1.position.y,car1.position.x + 30*cos(car1.angle+wheels1+PI),car1.position.y + 30*sin(car1.angle+wheels1+PI));//mostra a direcao da roda do carro 1
   line(car2.position.x,car2.position.y,car2.position.x + 30*cos(car2.angle+wheels2),car2.position.y + 30*sin(car2.angle+wheels2));//mostra a direcao da roda do carro 2
   if(car1.speed>0.01){//esse if e por cause que tem um bug que a speed nunca zera de verdade, por causa da conversao dos numeros fracionarios, ai e pra não ficar uma notacao cientifica do tipo 4.28487578283723e-25 ou algo do tipo
-    text(Math.round(car1.speed*60), windowWidth-50, windowHeight-30, 30);
+    text(Math.round(car1.speed*60), width-50, height-30, 30);
   }
   else{
-    text(0, windowWidth-50, windowHeight-30, 30);//printa isso aqui em vez da notacao cientifica de numeros muito baixos
+    text(0, width-50, height-30, 30);//printa isso aqui em vez da notacao cientifica de numeros muito baixos
   }
   if(car2.speed>0.01){//mesma coisa do if acima, mas para o carro 2
-    text(Math.round(car2.speed*60), 50, windowHeight-30, 30);
+    text(Math.round(car2.speed*60), 50, height-30, 30);
   }
   else{
-    text(0, 50, windowHeight-30, 30);//printa o 0 pro carro 2
+    text(0, 50, height-30, 30);//printa o 0 pro carro 2
   }
+  text(round(degrees(wheels1)), width-200, height-30, 30);
+  text(round(degrees(car1.angle)), width-150, height-30, 30);
 }
 
+/*Events.on(car1, "beforeUpdate", function(){
+  Body.setAngularVelocity(car1, {x:0, y:0});
+  var aux = Matter.Vertices.rotate(car1.vertices, car1.angle, car1.position);
+  Body.setVertices(car1, aux);
+});*/
 
 function checkCar1Control() {
   if(keyIsDown(RIGHT_ARROW)){//movimentacao das rodas do carro
@@ -160,6 +172,9 @@ function checkCar1Control() {
   if(keyIsDown(DOWN_ARROW)){//freia o carro e, eventualmente, da re
     acellaration1 = 0.05;
     Body.setAngle(car1, car1.angle-=wheels1/360);
+  }
+  if(car1.angle>2*PI||car1.angle<-2*PI){
+    Body.setAngle(car1, 0);
   }
   if(car1.speed<4){//limita a velocidade do carro 1, para nao crescer infinitamente
     Body.setVelocity(car1, {x:car1.velocity.x+acellaration1*cos(car1.angle+wheels1), y:car1.velocity.y+acellaration1*sin(car1.angle+wheels1)});
