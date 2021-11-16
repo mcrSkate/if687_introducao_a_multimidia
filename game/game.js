@@ -7,16 +7,22 @@ const Engine = Matter.Engine,
     Mouse = Matter.Mouse,
     MouseConstraint = Matter.MouseConstraint;
 
-var pontos1 = 0, pontos2 = 0, wheels1, wheels2; acellaration1 = 0, acellaration2 = 0;
-
+var pontos1 = 0, pontos2 = 0, wheel, wheels1, wheels2; acellaration1 = 0, acellaration2 = 0, randomAux1 = 0, randomAux2 = 0;
 const drawBody = Helpers.drawBody;
 var engine;
-
+var carImages = [];
 var left1, left2, right1, right2, up, bottom, disco, gol1, gol2;
 var car1, car2;
 var carImage1, carImage2;
 
 function setupGame() {
+    randomAux1 = Math.floor(random(10));
+    carImage1 = carImages[randomAux1];
+    randomAux2 = Math.floor(random(10));
+    while(randomAux2==randomAux1){
+        randomAux2 = Math.floor(random(10));
+    }
+    carImage2 = carImages[randomAux2];
     createCanvas(windowWidth, windowHeight);
     wheels1 = 0;
     wheels2 = 0;
@@ -32,7 +38,7 @@ function setupGame() {
     right2 = Bodies.rectangle(windowWidth - 25, 5 * windowHeight / 6, 50, windowHeight / 3, { restitution: 1, isStatic: true, friction: 0 });//right
     up = Bodies.rectangle(windowWidth / 2, 25, windowWidth - 100, 50, { restitution: 1, isStatic: true, friction: 0 });//top
     bottom = Bodies.rectangle(windowWidth / 2, windowHeight - 25, windowWidth - 100, 50, { restitution: 1, isStatic: true, friction: 0 });//down
-    disco = Bodies.circle(windowWidth / 2, windowHeight / 2, 50, { restitution: 1, frictionAir: 0, friction: 0, density: 0.00001, name: 'disco', mass: 1 });
+    disco = Bodies.circle(windowWidth / 2, windowHeight / 2, 50, { restitution: 1, frictionAir: 0, friction: 0, density: 0.00001, name: 'disco', mass: 0.1 });
     car1 = Bodies.rectangle(windowWidth - 100, windowHeight / 2, 80, 50, { restitution: 0.5, friction: 0, frictionAir: 0.03, density: 0.002, mass: 5 });
     car2 = Bodies.rectangle(100, windowHeight / 2, 80, 50, { restitution: 0.5, friction: 0, frictionAir: 0.03, density: 0.002, mass: 5 });
     World.add(engine.world, [left1, right1, left2, right2, up, bottom, disco, gol1, gol2, car1, car2]);
@@ -74,13 +80,24 @@ function resetPoint() { //deixa tudo com estado inicial
     Body.setVelocity(car2, { x: 0, y: 0 });
     Body.setAngle(car1, 0);
     Body.setAngle(car2, 0);
+    Body.setAngle(disco, 0);
     wheels1 = 0;
     wheels2 = 0;
+    Body.setAngularVelocity(disco, 0);
 }
 
 function preload() {
-    carImage1 = loadImage('./assets/grey.png');
-    carImage2 = loadImage('./assets/blue.png');
+    carImages[0] = loadImage('./assets/grey.png');
+    carImages[1] = loadImage('./assets/light_blue.png');
+    carImages[2] = loadImage('./assets/beige.png');
+    carImages[3] = loadImage('./assets/green.png');
+    carImages[4] = loadImage('./assets/orange.png');
+    carImages[5] = loadImage('./assets/pink.png');
+    carImages[6] = loadImage('./assets/blue.png');
+    carImages[7] = loadImage('./assets/purple.png');
+    carImages[8] = loadImage('./assets/red.png');
+    carImages[9] = loadImage('./assets/yellow.png');
+    wheel = loadImage('./assets/wheel.png');
 }
 
 function drawGame() {
@@ -105,9 +122,9 @@ function drawGame() {
     checkCar2Control();
     imageMode(CENTER);
     translate(car1.position.x, car1.position.y);//abaixo sao rotacoes e translacoes para poder alinhar a imagem ao movimento do carro, fazendo com que ela sempre rotacione de acordo com o angulo do body
-    rotate(car1.angle);
+    rotate(car1.angle+PI);
     image(carImage1, 0, 0, 85, 55);
-    rotate(-car1.angle);
+    rotate(-car1.angle-PI);
     translate(-car1.position.x, -car1.position.y);
     translate(car2.position.x, car2.position.y);
     rotate(car2.angle);
@@ -119,6 +136,11 @@ function drawGame() {
     stroke(255, 0, 0);
     line(car1.position.x, car1.position.y, car1.position.x + 30 * cos(car1.angle + wheels1 + PI), car1.position.y + 30 * sin(car1.angle + wheels1 + PI));//mostra a direcao da roda do carro 1
     line(car2.position.x, car2.position.y, car2.position.x + 30 * cos(car2.angle + wheels2), car2.position.y + 30 * sin(car2.angle + wheels2));//mostra a direcao da roda do carro 2
+    translate(disco.position.x, disco.position.y);
+    rotate(disco.angle);
+    image(wheel, 0, 0, 100, 100);
+    rotate(-disco.angle);
+    translate(-disco.position.x, -disco.position.y);
     if (car1.speed > 0.01) {//esse if e por cause que tem um bug que a speed nunca zera de verdade, por causa da conversao dos numeros fracionarios, ai e pra não ficar uma notacao cientifica do tipo 4.28487578283723e-25 ou algo do tipo
         text(Math.round(car1.speed * 60), windowWidth - 50, windowHeight - 30, 30);
     }
