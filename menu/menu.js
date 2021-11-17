@@ -1,11 +1,14 @@
-var button
+var startButton
 
 function setupMenu()
 {
-    createCanvas(height,width);
-    button = createButton('Start Game');
-    button.position(0, 0);
-    button.mousePressed(gameStart);
+    createCanvas(windowWidth, windowHeight);
+    background(100,100,100);
+    startButton = createButton('Start Game');
+    startButton.position(windowWidth/2 - 40,300);
+    startButton.mousePressed(gameStart);
+    startButton.class('button');
+
 }
 
 function drawMenu()
@@ -15,6 +18,6 @@ function drawMenu()
 
 function gameStart()
 {
-    button.hide();
+    startButton.hide();
     startGame = true;
 }

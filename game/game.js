@@ -7,6 +7,10 @@ const Engine = Matter.Engine,
     Mouse = Matter.Mouse,
     MouseConstraint = Matter.MouseConstraint;
 
+var isGamePaused = false;
+
+var canvas;
+
 var pontos1 = 0, pontos2 = 0, wheel, wheels1, wheels2; acellaration1 = 0, acellaration2 = 0, randomAux1 = 0, randomAux2 = 0;
 const drawBody = Helpers.drawBody;
 var engine;
@@ -14,6 +18,8 @@ var carImages = [];
 var left1, left2, right1, right2, up, bottom, disco, gol1, gol2;
 var car1, car2;
 var carImage1, carImage2;
+
+var pauseButton;
 
 function setupGame() {
     randomAux1 = Math.floor(random(10));
@@ -23,7 +29,7 @@ function setupGame() {
         randomAux2 = Math.floor(random(10));
     }
     carImage2 = carImages[randomAux2];
-    createCanvas(windowWidth, windowHeight);
+    canvas = createCanvas(windowWidth, windowHeight);
     wheels1 = 0;
     wheels2 = 0;
     engine = Engine.create();
@@ -69,6 +75,11 @@ function setupGame() {
         }
 
     });
+
+    pauseButton = createButton('❙❙');
+    pauseButton.position(windowWidth/2 - 10 ,8);
+    pauseButton.mousePressed(pauseGame);
+    pauseButton.class('button');
 }
 
 function resetPoint() { //deixa tudo com estado inicial
@@ -101,6 +112,8 @@ function preload() {
 }
 
 function drawGame() {
+   if (isGamePaused == false)
+   {
     background(255);
     //verifyPositon();
     stroke(0);
@@ -153,6 +166,7 @@ function drawGame() {
     else {
         text(0, 50, windowHeight - 30, 30);//printa o 0 pro carro 2
     }
+   }
 }
 
 
@@ -239,4 +253,21 @@ function checkCar2Control() {//mesma coisa que encima, so que pro carro 2
       }
     }
     Body.setPosition(car2, {x:car2.position.x+car2.velocity.x, y:car2.position.y+car2.velocity.y});*/
+}
+
+
+function pauseGame()
+{
+    if (isGamePaused == false)
+    {
+        isGamePaused = true;
+        filter(BLUR, 2);
+        pauseButton.html('►');
+    }
+    else 
+    {
+        isGamePaused = false;
+        pauseButton.html('❙❙');
+    }
+    
 }
