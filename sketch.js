@@ -1,5 +1,6 @@
 var startGame = false;
 var gameIsRunning = false;
+var chosenMode = 0;
 
 function setup()
 {
@@ -7,9 +8,11 @@ function setup()
   {
     setupMenu()
   }
-  else 
+  else if(chosenMode == 1)
   {
-    setupGame()
+    modo1_setupGame();
+  }else if(chosenMode == 2){
+    modo2_setupGame();
   }
 
 }
@@ -18,12 +21,22 @@ function draw()
 {
   if (startGame) {
     setup()
-    drawGame()
+    if(chosenMode == 1){
+      modo1_drawGame()
+    }
+    if(chosenMode == 2){
+      modo2_drawGame()
+    }
     gameIsRunning = true
   }
   if(gameIsRunning)
   {
     startGame = false;
-    drawGame()
+    if(chosenMode == 1){
+      modo1_drawGame()
+    }
+    if(chosenMode == 2){
+      modo2_drawGame()
+    }
   }
 }
