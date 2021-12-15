@@ -1,24 +1,24 @@
+//Variáveis
+
 let canvas1;
-
 let pontos1 = 0, pontos2 = 0, wheels1, wheels2; acellaration1 = 0, acellaration2 = 0, randomAux1 = 0, randomAux2 = 0;
-
 let engine;
-
 let left1, left2, right1, right2, up, bottom, disco, gol1, gol2;
 let car1, car2;
 let carImage1, carImage2;
-
 let winner = 0;
 let restartButton;
 let menuButton;
 let isRunning = true;
 
+//Função para setar o modo de jogo padrão inicialmente
 function modo1_setupGame(){
     pontos1 = 0;
     pontos2 = 0;
     winner = 0;
     isRunning = true;
-    menuButton = createButton('Voltar ao Menu');
+
+    menuButton = createButton('Voltar ao Menu'); //Botão para voltar ao menu
     menuButton.position(windowWidth/2 - 50, windowHeight/2+120);
     menuButton.mousePressed(()=>{
         menuButton.hide()
@@ -29,7 +29,8 @@ function modo1_setupGame(){
     })
     menuButton.class('button');
     menuButton.hide();
-    restartButton = createButton('Reiniciar');
+
+    restartButton = createButton('Reiniciar'); //Botão para reiniciar o modo atual
     restartButton.position(windowWidth/2 - 30, windowHeight/2 + 70);
     restartButton.mousePressed( () => {
         menuButton.hide()
@@ -41,6 +42,8 @@ function modo1_setupGame(){
     });
     restartButton.class('button');
     restartButton.hide();
+    
+    //escolhendo as imagens aleatórias para os carros
     randomAux1 = Math.floor(random(10));
     carImage1 = carImages[randomAux1];
     randomAux2 = Math.floor(random(10));
@@ -53,8 +56,9 @@ function modo1_setupGame(){
     wheels2 = 0;
     engine = Engine.create();
 
-    engine.world.gravity.y = 0;
+    engine.world.gravity.y = 0; //setando gravidade do mundo
 
+    //criando os bodies de cada estrutura do mundo
     gol1 = Bodies.rectangle(-20, windowHeight / 2, 1, windowHeight / 3, { isStatic: true, restitution: 0, friction: 1, name: 'gol1' });
     gol2 = Bodies.rectangle(windowWidth + 20, windowHeight / 2, 1, windowHeight / 3, { isStatic: true, friction:1, restitution: 0, name: 'gol2' });
     left1 = Bodies.rectangle(25, windowHeight / 6, 50, windowHeight / 3, { restitution: 0.8, isStatic: true, friction: 0 });//left
@@ -66,14 +70,13 @@ function modo1_setupGame(){
     disco = Bodies.circle(windowWidth / 2, windowHeight / 2, 30, { restitution: 1, frictionAir: 0.005, friction: 0, density: 0.00001, name: 'disco', mass: 0.1 });
     car1 = Bodies.rectangle(windowWidth - 100, windowHeight / 2, 80, 50, { restitution: 0.5, friction: 0, frictionAir: 0.03, density: 0.002, mass: 5 });
     car2 = Bodies.rectangle(100, windowHeight / 2, 80, 50, { restitution: 0.5, friction: 0, frictionAir: 0.03, density: 0.002, mass: 5 });
-    Composite.add(engine.world, [left1, right1, left2, right2, up, bottom, disco, gol1, gol2, car1, car2]);
+    Composite.add(engine.world, [left1, right1, left2, right2, up, bottom, disco, gol1, gol2, car1, car2]); //adicionando os bodies criados à composição do mundo
 
+    Engine.run(engine); //Startando a engine
 
-    Engine.run(engine);
+    modo1_resetPoint(); //Setando as variáveis das estruturas para o começo
 
-    modo1_resetPoint();
-
-    Events.on(engine, 'collisionStart', function (event) {
+    Events.on(engine, 'collisionStart', function (event) {  //Evento para verificar o gol
         const pairs = event.pairs[0];
         const bodyA = pairs.bodyA;
         const bodyB = pairs.bodyB;
@@ -113,19 +116,23 @@ function modo1_resetPoint() { //deixa tudo com estado inicial
 }
 
 
-function modo1_drawGame() {
+function modo1_drawGame() { //Desenha as estruturas e imagens do modo padrão, também desenha o menu ao final do jogo
     if(isRunning){
         if(winner == 1){
-            fill(255);
-            background(255);
+            fill(0);
+            stroke(0);
+            imageMode(CORNER)
+            background(backgroundImagem);
             textSize(50);
             text("Jogador 1 venceu", windowWidth/2-200, windowHeight/2-25);
             restartButton.show();
             menuButton.show();
         }
         else if(winner == 2){
-            fill(255);
-            background(255);
+            fill(0);
+            stroke(0);
+            imageMode(CORNER)
+            background(backgroundImagem);
             textSize(50); 
             text("Jogador 2 venceu", windowWidth/2-200, windowHeight/2-25);
             restartButton.show();
@@ -152,6 +159,7 @@ function modo1_drawGame() {
             text("Jogador 2: " + pontos2, windowWidth - 140, 30);
             modo1_car1Control();
             modo1_car2Control();
+
             imageMode(CENTER);
             translate(car1.position.x, car1.position.y);//abaixo sao rotacoes e translacoes para poder alinhar a imagem ao movimento do carro, fazendo com que ela sempre rotacione de acordo com o angulo do body
             rotate(car1.angle+PI);
@@ -171,6 +179,7 @@ function modo1_drawGame() {
             image(wheel, 0, 0, 60, 60);
             rotate(-disco.angle);
             translate(-disco.position.x, -disco.position.y);
+
             if (car1.speed > 0.01) {//esse if e por cause que tem um bug que a speed nunca zera de verdade, por causa da conversao dos numeros fracionarios, ai e pra não ficar uma notacao cientifica do tipo 4.28487578283723e-25 ou algo do tipo
                 text("Px/s: " + Math.round(car1.speed * 60), windowWidth - 100, windowHeight - 50, 30);
             }

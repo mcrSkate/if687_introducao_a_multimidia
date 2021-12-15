@@ -12,12 +12,12 @@ canvas {
 .button {
   align-items: center;
   background-color: #fff;
-  border: 2px solid #000;
+  border: 2px solid #00f;
   box-sizing: border-box;
-  color: #000;
+  color: #00f;
   cursor: pointer;
   display: inline-flex;
-  fill: #000;
+  fill: #00f;
   font-family: Inter,sans-serif;
   font-size: 16px;
   font-weight: 600;

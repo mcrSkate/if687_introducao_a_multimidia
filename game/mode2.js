@@ -1,9 +1,6 @@
 let canvas2;
-
 let mode2_pontos1 = 0, mode2_pontos2 = 0, mode2_wheels1, mode2_wheels2; mode2_acellaration1 = 0, mode2_acellaration2 = 0, mode2_randomAux1 = 0, mode2_randomAux2 = 0;
-
 let mode2_engine;
-
 let mode2_left1, mode2_left2, mode2_right1, mode2_right2, mode2_up, mode2_bottom, mode2_disco, mode2_gol1, mode2_gol2;
 let mode2_car1, mode2_car2;
 let mode2_carImage1, mode2_carImage2;
@@ -117,16 +114,20 @@ function modo2_resetPoint() { //deixa tudo com estado inicial
 function modo2_drawGame() {
     if(mode2_isRunning){
         if(mode2_winner == 1){
-            fill(255);
-            background(255);
+            fill(0);
+            stroke(0);
+            imageMode(CORNER)
+            background(backgroundImagem);
             textSize(50);
             text("Jogador 1 venceu", windowWidth/2-200, windowHeight/2-25);
             modo2_restartButton.show();
             mode2_menuButton.show();
         }
         else if(mode2_winner == 2){
-            fill(255);
-            background(255);
+            fill(0);
+            stroke(0);
+            imageMode(CORNER)
+            background(backgroundImagem);
             textSize(50); 
             text("Jogador 2 venceu", windowWidth/2-200, windowHeight/2-25);
             modo2_restartButton.show();
