@@ -31,6 +31,8 @@ function setup()
     modo1_setupGame();
   }else if(chosenMode == 2){
     modo2_setupGame();
+  } else if(chosenMode == 3){
+    modo3_setupGame();
   }
   
 }
@@ -47,6 +49,9 @@ function draw()
     if(chosenMode == 2){
       modo2_drawGame()
     }
+    if(chosenMode == 3){
+      modo3_drawGame()
+    }
     gameIsRunning = true
   }
   if(gameIsRunning)
@@ -57,6 +62,9 @@ function draw()
     }
     if(chosenMode == 2){
       modo2_drawGame()
+    }
+    if(chosenMode == 3){
+      modo3_drawGame()
     }
   }
 }

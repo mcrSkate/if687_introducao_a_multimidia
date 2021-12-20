@@ -35,6 +35,10 @@ function setupMenu()
     modo2.position(windowWidth/2 - 100,360);
     modo2.mousePressed(modo2Start);
     modo2.class('button');
+    modo3 = createButton('Modo com 2 discos');
+    modo3.position(windowWidth/2 - 90,420);
+    modo3.mousePressed(modo3Start);
+    modo3.class('button');
     
 }
 /*
@@ -47,6 +51,7 @@ function modo1Start() //função para startar o modo 1
 {
     modo1.hide();
     modo2.hide();
+    modo3.hide();
     startGame = true;
     chosenMode = 1;
 }
@@ -55,6 +60,16 @@ function modo2Start() //função para startar o modo 2
 {
     modo1.hide();
     modo2.hide();
+    modo3.hide();
     startGame = true;
     chosenMode = 2;
+}
+
+function modo3Start() //função para startar o modo 2
+{
+    modo1.hide();
+    modo2.hide();
+    modo3.hide();
+    startGame = true;
+    chosenMode = 3;
 }
